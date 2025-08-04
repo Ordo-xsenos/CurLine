@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load split_text %}
+
+{% block title %}Избранное{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+  <h2 class="text-2xl font-semibold text-gray-900 mb-1">Избранные статьи</h2>
+  <p class="text-gray-600">Здесь собраны все статьи, которые вы добавили в избранное</p>
+</div>
+
+<div class="space-y-4">
+  {% for fav in products %}
+    {% with article=fav.article %}
+    <article class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300 cursor-pointer group" onclick="openArticle('{{ article.slug }}')">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex-1">
+          <div class="flex items-center mb-3">
+            <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=60&amp;h=60&amp;fit=crop&amp;crop=face" alt="Tech publication" class="w-6 h-6 rounded-full mr-2" />
+            <span class="text-sm text-gray-500">Towards Data Science</span>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+            {{ article.title }}
+          </h3>
+          <p class="text-gray-600 text-sm mb-3">{{ article.content|truncatewords:30 }}</p>
+          <div class="flex items-center space-x-4 text-sm text-gray-500">
+            <span class="flex items-center">
+              <span class="material-symbols-outlined text-xs mr-1">schedule</span>
+              {{ article.content|reading_time }}
+            </span>
+            <span class="flex items-center">
+              <span class="material-symbols-outlined text-xs mr-1">thumb_up</span>
+              <span class="like-count" data-article-id="{{ article.id }}">{{ article.likes.count }}</span> лайков
+            </span>
+          </div>
+        </div>
+        <div class="flex md:flex-col items-end md:items-center space-x-4 md:space-x-0 md:space-y-2">
+          <div class="text-right md:text-center">
+            <div class="text-sm text-gray-500 mb-1">Опубликовано</div>
+            <div class="text-sm font-medium">{{ article.published_at|date:"d M Y" }}</div>
+          </div>
+          <div class="flex items-center px-3 py-1 rounded-full space-x-2" style="background: #f2f2f2;">
+            <button aria-label="Лайк" class="like-btn{% if article.id in user_likes %} liked{% endif %}" data-article-id="{{ article.id }}">
+              <span class="material-symbols-outlined">thumb_up</span>
+            </button>
+            <button aria-label="В избранное" class="heart-btn{% if article.id in user_favourites %} liked{% endif %}" data-article-id="{{ article.id }}">
+              <span class="material-symbols-outlined">{% if article.id in user_favourites %}bookmark{% else %}bookmark_border{% endif %}</span>
+            </button>
+            <span class="text-primary-700 font-semibold">{{ article.price|floatformat:1 }}</span>
+          </div>
+        </div>
+      </div>
+    </article>
+    {% endwith %}
+  {% empty %}
+    <div class="text-center py-8">
+      <p class="text-gray-500">У вас нет избранных статей.</p>
+    </div>
+  {% endfor %}
+</div>
+
+{% if page_obj and page_obj.has_other_pages %}
+<div class="mt-8 flex justify-center">
+  <nav class="flex space-x-2">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Предыдущая</a>
+    {% endif %}
+    <span class="px-4 py-2 bg-primary-500 text-white rounded-lg">
+      Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+    </span>
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Следующая</a>
+    {% endif %}
+  </nav>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function openArticle(slug) {
+  window.open(`/articles/${slug}/`, '_blank');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.like-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const articleId = btn.getAttribute('data-article-id');
+      fetch('/like/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: `article_id=${articleId}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.likes_count !== undefined) {
+          const countSpan = document.querySelector(`.like-count[data-article-id="${articleId}"]`);
+          if (countSpan) countSpan.textContent = data.likes_count;
+          btn.classList.toggle('liked', data.liked);
+        }
+      });
+    });
+  });
+  document.querySelectorAll('.heart-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const articleId = btn.getAttribute('data-article-id');
+      const url = "{% url 'articles:add_favourite' 0 %}".replace('0', articleId);
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+      }).then(response => {
+        if (response.ok) {
+          // Если на странице избранного, удаляем карточку
+          const card = btn.closest('article');
+          if (card) card.remove();
+        } else {
+          alert('Ошибка при удалении из избранного');
+        }
+      });
+    });
+  });
+});
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+</script>
+{% endblock %}

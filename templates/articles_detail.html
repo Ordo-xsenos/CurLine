@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ article.title }} - CurLine{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<article class="prose max-w-none">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ article.title }}</h1>
+    <div class="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+      <span>Towards Data Science</span>
+      <span>•</span>
+      <span>{{ article.published_at|date:"d M Y" }}</span>
+      <span>•</span>
+      <span>{{ article.content|wordcount }} слов</span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <a href="{{ article.url }}" target="_blank" class="text-primary-500 hover:text-primary-600">
+        Читать оригинал →
+      </a>
+      <span class="text-gray-500">Цена: 0$</span>
+    </div>
+  </header>
+  
+  <div class="content">
+    {{ processed_content|safe }}
+  </div>
+  
+  <footer class="mt-8 pt-6 border-t border-gray-200">
+    <div class="flex items-center space-x-4">
+      <button class="like-btn" aria-label="Лайк">
+        <span class="material-symbols-outlined">thumb_up</span>
+      </button>
+      <button class="flex items-center space-x-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+        <span class="material-symbols-outlined">share</span>
+        <span>Поделиться</span>
+      </button>
+    </div>
+  </footer>
+</article>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Логика для анимации и состояния лайка
+function toggleLike(btn) {
+  btn.classList.toggle('liked');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.like-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleLike(btn);
+    });
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{
+    "python.analysis.extraPaths": ["./CurLine"],
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticMode": "workspace",
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.stubPath": "./typings",
+    "python.analysis.include": [
+        "**/*.py"
+    ],
+    "python.analysis.exclude": [
+        "**/migrations/**",
+        "**/__pycache__/**",
+        "**/.venv/**"
+    ],
+    "python.analysis.ignore": [
+        "**/migrations/**"
+    ]
+}

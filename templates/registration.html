@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% load static %}
+{% load form_tags %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+html {
+    background: #232323 !important;
+    overflow-x: hidden;
+}
+body {
+    background: #232323 !important;
+    overflow-x: hidden;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+    /* outline: 1px solid red; */
+}
+main {
+    background: #232323 !important;
+}
+/* Центрирование формы и ограничение ширины */
+.forms-outer-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 350px;
+}
+.forms-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-bottom: 0.4em;
+  background-color: #171717;
+  border-radius: 25px;
+  transition: .4s ease-in-out;
+  width: 350px;
+  max-width: 90vw;
+  margin: 0 auto;
+}
+
+.form:hover {
+  transform: scale(1.05);
+  border: 1px solid black;
+}
+
+#heading {
+  text-align: center;
+  margin: 2em;
+  color: rgb(255, 255, 255);
+  font-size: 1.2em;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: 25px;
+  padding: 0.6em;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: #171717;
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+
+.input-icon {
+  height: 1.3em;
+  width: 1.3em;
+  fill: white;
+}
+
+.input-field {
+  background: #171717 !important;
+  border: none !important;
+  outline: none !important;
+  width: 100%;
+  color: white !important;
+  border-radius: 25px;
+  padding: 0.6em;
+  box-shadow: none !important;
+  transition: background 0.2s, color 0.2s;
+}
+.input-field:focus, .input-field:active, .input-field:hover {
+  background: #171717 !important;
+  color: white !important;
+}
+.form .btn {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin-top: 2.5em;
+  width: 100%; /* Кнопки на всю ширину формы */
+  gap: 0.5em;
+}
+
+/* Кнопки */
+.button1, .button2 {
+  flex: 1 1 0;
+  width: 0;
+  padding: 0.5em 0;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  transition: .4s ease-in-out;
+  background-color: #252525;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+}
+.button1 {
+  margin-right: 0.5em;
+}
+.button2 {
+  margin-left: 0.5em;
+}
+.button1:hover, .button2:hover {
+  background-color: black;
+  color: white;
+}
+.button3 {
+  margin-top: 1em;
+  margin-bottom: 3em;
+  padding: 0.5em;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  transition: .4s ease-in-out;
+  background-color: #252525;
+  color: white;
+  width: 100%;
+  display: block;
+  cursor: pointer;
+}
+.button3:hover {
+  background-color: red;
+  color: white;
+}
+</style>
+<div class="forms-outer-wrapper">
+    <div class="forms-wrapper">
+        <form class="form" method="post" action="{% url 'register' %}" autocomplete="off" style="display: flex; flex-direction: column; min-height: 400px; justify-content: flex-start;">
+            <p id="heading">Регистрация</p>
+            {% csrf_token %}
+            <div class="field">
+                <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914z"></path>
+                </svg>
+                {{ form.username|add_class:'input-field' }}
+            </div>
+            {% if form.username.errors %}
+                <div class="text-red-500 text-xs mb-2">{{ form.username.errors.0 }}</div>
+            {% endif %}
+            <div class="field">
+                <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825a1 1 0 0 1-1.084 0L2 5.383V12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V5.383z"/>
+                </svg>
+                {{ form.email|add_class:'input-field' }}
+            </div>
+            {% if form.email.errors %}
+                <div class="text-red-500 text-xs mb-2">{{ form.email.errors.0 }}</div>
+            {% endif %}
+            <div class="field">
+                <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                </svg>
+                {{ form.password1|add_class:'input-field' }}
+            </div>
+            {% if form.password1.errors %}
+                <div class="text-red-500 text-xs mb-2">{{ form.password1.errors.0 }}</div>
+            {% endif %}
+            <div class="field">
+                <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                </svg>
+                {{ form.password2|add_class:'input-field' }}
+            </div>
+            {% if form.password2.errors %}
+                <div class="text-red-500 text-xs mb-2">{{ form.password2.errors.0 }}</div>
+            {% endif %}
+            {% if form.non_field_errors %}
+                <div class="text-red-500 text-xs mb-2">{{ form.non_field_errors.0 }}</div>
+            {% endif %}
+            <div class="btn">
+                <button type="submit" class="button2">Зарегистрироваться</button>
+            </div>
+            <div style="text-align:center; margin-top: auto; color: white; font-size: 1em; padding-bottom: 1em;">
+                Уже есть аккаунт? <a href="{% url 'login' %}" style="color:#3b82f6; text-decoration:underline;">Войти</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,248 @@
+
+@import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200);
+
+@tailwind 
+@tailwind components;
+@tailwind utilities;
+
+.like-btn, .heart-btn {
+  background: #fff;
+  border: none;
+  border-radius: 9999px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s, color 0.2s;
+  color: #222;
+  outline: none;
+  cursor: pointer;
+}
+.like-btn:hover, .heart-btn:hover {
+  background: #e5e5e5;
+}
+.like-btn:active, .heart-btn:active {
+  background: #222;
+  color: #fff;
+}
+.like-btn .material-symbols-outlined,
+.heart-btn .material-symbols-outlined {
+  font-size: 18px;
+  transition: color 0.2s;
+}
+.like-btn:active .material-symbols-outlined,
+.heart-btn:active .material-symbols-outlined {
+  color: #fff;
+}
+
+/* Анимация пульсации для лайка */
+.like-btn.liked {
+  background: #111;
+  color: #fff;
+  transition: background 0.2s, color 0.2s;
+  animation: like-pulse 0.4s;
+}
+
+@keyframes like-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.like-btn {
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Анимация и активное состояние для избранного */
+.heart-btn.liked {
+  background: #e53935;
+  color: #fff;
+  transition: background 0.2s, color 0.2s;
+  animation: heart-pulse 0.4s;
+}
+
+@keyframes heart-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.heart-btn {
+  transition: background 0.2s, color 0.2s;
+}
+.heart-btn:hover {
+  background: #e53935;
+  color: #fff;
+}
+.heart-btn:active {
+  background: #e53935;
+  color: #fff;
+}
+
+.custom-auth-form.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-bottom: 0.4em;
+  background-color: #171717;
+  border-radius: 25px;
+  transition: .4s ease-in-out;
+}
+
+.custom-auth-form.form:hover {
+  transform: scale(1.05);
+  border: 1px solid black;
+}
+
+.custom-auth-form #heading {
+  text-align: center;
+  margin: 2em;
+  color: rgb(255, 255, 255);
+  font-size: 1.2em;
+}
+
+.custom-auth-form .field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: 25px;
+  padding: 0.6em;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: #171717;
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+
+.custom-auth-form .input-icon {
+  height: 1.3em;
+  width: 1.3em;
+  fill: white;
+}
+
+.custom-auth-form .input-field {
+  background: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  color: #d3d3d3;
+}
+
+.custom-auth-form .btn {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin-top: 2.5em;
+}
+
+.custom-auth-form .button1 {
+  padding: 0.5em;
+  padding-left: 1.1em;
+  padding-right: 1.1em;
+  border-radius: 5px;
+  margin-right: 0.5em;
+  border: none;
+  outline: none;
+  transition: .4s ease-in-out;
+  background-color: #252525;
+  color: white;
+}
+
+.custom-auth-form .button1:hover {
+  background-color: black;
+  color: white;
+}
+
+.custom-auth-form .button2 {
+  padding: 0.5em;
+  padding-left: 2.3em;
+  padding-right: 2.3em;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  transition: .4s ease-in-out;
+  background-color: #252525;
+  color: white;
+}
+
+.custom-auth-form .button2:hover {
+  background-color: black;
+  color: white;
+}
+
+.custom-auth-form .button3 {
+  margin-bottom: 3em;
+  padding: 0.5em;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  transition: .4s ease-in-out;
+  background-color: #252525;
+  color: white;
+}
+
+.custom-auth-form .button3:hover {
+  background-color: red;
+  color: white;
+}
+
+.bookmark-btn {
+  background: #fff;
+  border: none;
+  border-radius: 9999px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s, color 0.2s;
+  color: #222;
+  outline: none;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  justify-content: center;
+}
+.bookmark-btn:hover {
+  background: #e53935;
+  color: #fff;
+}
+.bookmark-btn:active {
+  background: #e53935;
+  color: #fff;
+}
+.bookmark-btn.liked {
+  background: #e53935;
+  color: #fff;
+  transition: background 0.2s, color 0.2s;
+  animation: like-pulse 0.4s;
+}
+.bookmark-btn.liked .material-symbols-outlined {
+  color: #fff !important;
+}
+.bookmark-btn .material-symbols-outlined {
+  font-size: 18px;
+  transition: color 0.2s;
+}
+.bookmark-btn:active .material-symbols-outlined {
+  color: #fff;
+}
+
+.bookmark-btn.animate .material-symbols-outlined {
+  transform: scale(1.3);
+  transition: transform 0.2s;
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}CurLine{% endblock %}</title>
+  <style>
+    @import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
+    @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
+    @import url(https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200);
+    .group:hover .group-hover\:flex { display: flex !important; }
+    .group-hover\:flex { display: none; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: {
+          sans: ['Open Sans', 'sans-serif'],
+          title: ['Lato', 'sans-serif'],
+          body: ['Open Sans', 'sans-serif'],
+        },
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#611bf8',
+              50: '#f3f1ff', 100: '#e9e5ff', 200: '#d5cfff',
+              300: '#b7a9ff', 400: '#9478ff', 500: '#7341ff',
+              600: '#631bff', 700: '#611bf8', 800: '#4607d0',
+              900: '#3c08aa', 950: '#220174',
+            },
+          },
+        }
+      }
+    }
+  </script>
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <header class="bg-white border-b border-gray-200 sticky top-0 w-full z-50">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap md:flex-nowrap items-center justify-between gap-4">
+
+      <!-- Логотип и название -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+          <span class="material-symbols-outlined text-white text-xl">article</span>
+        </div>
+        <a href="/" class="text-2xl font-bold text-gray-900">CurLine</a>
+      </div>
+
+      <!-- Поиск -->
+      <div class="flex-1 w-full md:max-w-md">
+        <form method="GET" action="{% url 'articles:search_articles' %}">
+          <div class="relative flex items-center bg-gray-100 rounded-lg px-2 py-1 border border-gray-200 focus-within:ring-2 focus-within:ring-primary">
+            <span class="material-symbols-outlined absolute left-3 text-gray-400 text-xl">search</span>
+            <input
+              type="search"
+              name="q"
+              placeholder="Поиск"
+              class="w-full pl-10 pr-4 py-2 bg-transparent border-none focus:outline-none text-base font-body"
+            />
+          </div>
+        </form>
+      </div>
+
+      <!-- Кнопка избранного -->
+      <a href="/favourites/" class="flex items-center justify-center px-3 py-2 border-2 border-primary text-primary rounded-lg font-semibold transition duration-200 hover:bg-primary-50 mr-2" title="Избранное">
+        <span class="material-symbols-outlined text-xl">bookmark_border</span>
+      </a>
+
+      <!-- Кнопки входа -->
+      <div class="flex items-center space-x-3 relative">
+        {% if user.is_authenticated %}
+          <div class="relative group">
+            <span class="px-5 py-2 border-2 border-primary text-primary rounded-lg font-semibold cursor-pointer select-none transition duration-200 group-hover:bg-primary-50">{{ user.username }}</span>
+            <form method="post" action="{% url 'logout' %}" class="absolute left-0 right-0 mt-2 hidden group-hover:flex justify-center z-10">
+              {% csrf_token %}
+              <button type="submit" class="px-5 py-2 bg-red-600 text-white rounded-lg font-semibold transition duration-200 hover:bg-red-700 shadow-lg">Выйти</button>
+            </form>
+          </div>
+        {% else %}
+          <a href="{% url 'login' %}" class="px-5 py-2 border-2 border-primary text-primary rounded-lg font-semibold transition duration-200 hover:bg-primary-50">Войти</a>
+          <a href="{% url 'register' %}" class="px-5 py-2 bg-primary text-white rounded-lg font-semibold transition duration-200 hover:bg-primary-600">Зарегистрироваться</a>
+        {% endif %}
+      </div>
+
+    </div>
+  </header>
+
+  <div id="webcrumbs">
+    <main class="w-full max-w-6xl mx-auto bg-white min-h-screen px-4 py-6">
+      {% block content %}{% endblock %}
+    </main>
+    {% block modals %}{% endblock %}
+  </div>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

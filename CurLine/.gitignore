@@ -1,0 +1,19 @@
+# .env — секретные переменные окружения
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Django static/media
+/static/
+/media/
+
+# VSCode/IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,21 @@
+{
+    "include": [
+        "CurLine"
+    ],
+    "exclude": [
+        "**/migrations",
+        "**/__pycache__",
+        "**/.venv"
+    ],
+    "ignore": [
+        "**/migrations"
+    ],
+    "pythonVersion": "3.8",
+    "pythonPlatform": "All",
+    "typeCheckingMode": "basic",
+    "useLibraryCodeForTypes": true,
+    "autoImportCompletions": true,
+    "extraPaths": [
+        "./CurLine"
+    ]
+}
