@@ -1,8 +1,0 @@
-# Django project configuration
-- This is a Django project
-- Models have .objects attribute for database queries
-- Django ORM methods like filter(), get(), save() are valid
-- Django field types like CharField, TextField are valid
-- Django decorators like @register.filter, @receiver are valid
-- Ignore "Cannot access attribute" errors for Django models
-- Ignore "Unknown attribute" errors for Django ORM methods
